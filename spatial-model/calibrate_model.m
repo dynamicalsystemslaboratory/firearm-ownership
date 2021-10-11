@@ -1,4 +1,4 @@
-function results = cemsar(y,x,W,info)
+function results = calibrate_model(y,x,W,info)
 % PURPOSE: computes spatial autoregressive model estimates
 %           y = p*W*y + X*b + e, using sparse matrix algorithms
 % ---------------------------------------------------
