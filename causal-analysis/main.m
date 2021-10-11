@@ -3,7 +3,6 @@
 clc; clear;
 
 load('nature.mat');
-load('restrictiveness.mat');
 load('BC_2000_2017_sa_dt.mat');
 load('BCC_2000_2017_sa_dt.mat');
 load('FO_2000_2017_sa_dt.mat');
@@ -11,7 +10,7 @@ load('S_2000_2017_sa_dt.mat');
 
 % initialize variables
 num_iterations = 50000;
-states = restrictiveness.state;
+states = BC_2000_2017_sa_dt.Properties.VariableNames(3:end-1);
 
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +40,7 @@ state_TE = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ',
 state_percentiles_95 = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_p_values = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_significance = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
-for s = transpose(states)
+for s = states
     
     % define time series
     X = BC_2000_2017_sa_dt{:,strcmp(BC_2000_2017_sa_dt.Properties.VariableNames,s)};
@@ -61,9 +60,9 @@ for s = transpose(states)
     state_p_values(strcmp(states,s),2:end) = array2table(p_values);
     
 end
-state_TE.state = states;
-state_percentiles_95.state = states;
-state_p_values.state = states;
+state_TE.state = transpose(states);
+state_percentiles_95.state = transpose(states);
+state_p_values.state = transpose(states);
 
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,7 +91,7 @@ state_TE = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ',
 state_percentiles_95 = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_p_values = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_significance = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
-for s = transpose(states)
+for s = states
     
     % define time series
     X = BCC_2000_2017_sa_dt{:,strcmp(BCC_2000_2017_sa_dt.Properties.VariableNames,s)};
@@ -112,9 +111,9 @@ for s = transpose(states)
     state_p_values(strcmp(states,s),2:end) = array2table(p_values);
  
 end
-state_TE.state = states;
-state_percentiles_95.state = states;
-state_p_values.state = states;
+state_TE.state = transpose(states);
+state_percentiles_95.state = transpose(states);
+state_p_values.state = transpose(states);
 
 
 
@@ -143,7 +142,7 @@ state_TE = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ',
 state_percentiles_95 = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_p_values = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_significance = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
-for s = transpose(states)
+for s = states
     
     % define time series
     X = S_2000_2017_sa_dt{:,strcmp(S_2000_2017_sa_dt.Properties.VariableNames,s)};
@@ -163,9 +162,9 @@ for s = transpose(states)
     state_p_values(strcmp(states,s),2:end) = array2table(p_values);
    
 end
-state_TE.state = states;
-state_percentiles_95.state = states;
-state_p_values.state = states;
+state_TE.state = transpose(states);
+state_percentiles_95.state = transpose(states);
+state_p_values.state = transpose(states);
 
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,7 +192,7 @@ state_TE = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ',
 state_percentiles_95 = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_p_values = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
 state_significance = array2table(nan(length(states),7),'VariableNames',{'state','TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX',});
-for s = transpose(states)
+for s = states
     
     % define time series
     X = FO_2000_2017_sa_dt{:,strcmp(FO_2000_2017_sa_dt.Properties.VariableNames,s)};
@@ -213,6 +212,7 @@ for s = transpose(states)
     state_p_values(strcmp(states,s),2:end) = array2table(p_values);
 
 end
-state_TE.state = states;
-state_percentiles_95.state = states;
-state_p_values.state = states;
+state_TE.state = transpose(states);
+state_percentiles_95.state = transpose(states);
+state_p_values.state = transpose(states);
+
