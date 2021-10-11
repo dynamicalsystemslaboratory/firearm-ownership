@@ -6,4 +6,4 @@ The "datasets" folder contains the model's output for firearm ownership, as well
 
 The files under "causal-analysis" implement transfer entropy analysis to infer causal relationships between three variables at a time.
 
-Codes are compatible with Matlab version R2020_a.
+Analyses were made in Matlab version R2020_a.
