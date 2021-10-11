@@ -4,6 +4,6 @@ The files under "spatial-model" use raw data to calibrate a spatial econometric 
 
 The "datasets" folder contains the model's output for firearm ownership, as well as the processed output following seasonal adjustment and linear detrending.
 
-The files under "
+The files under "causal-analysis" 
 
 Codes are compatible with Matlab version R2020_a
