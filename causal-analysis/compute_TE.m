@@ -1,9 +1,9 @@
-function [TE,distributions,percentiles_95,p_values,significance] = compute_TE(XYZX1Y1Z1,num_iterations)
+function [TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations)
 
 [TE_X_YZ,TE_X_ZY,TE_Y_XZ,TE_Y_ZX,TE_Z_XY,TE_Z_YX] = conditional_TE(XYZX1Y1Z1);
 TE = [TE_X_YZ,TE_X_ZY,TE_Y_XZ,TE_Y_ZX,TE_Z_XY,TE_Z_YX];
 
-distributions = array2table(nan(num_iterations,6),'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'});
+distributions = array2table(nan(num_iterations,6),'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'}); % empty table to be filled with surrogate distributions
 for iter = 1:num_iterations
     
     % shuffle X with respect to Y and Z (compute TE X->Y|Z and X->Z|Y)
@@ -42,11 +42,9 @@ end
 percentiles_95 = [quantile(distributions.TE_X_YZ,0.95) quantile(distributions.TE_X_ZY,0.95) quantile(distributions.TE_Y_XZ,0.95) quantile(distributions.TE_Y_ZX,0.95) quantile(distributions.TE_Z_XY,0.95) quantile(distributions.TE_Z_YX,0.95)];
 
 p_values = [];
-significance = [];
 for a = 1:6
     prcnt = [1-transpose([1:0.001:100])/100 prctile(distributions{:,a},[1:0.001:100],'all')];
     p_values = [p_values prcnt(find(abs(prcnt(:,2)-TE(a))==min(abs(prcnt(:,2)-TE(a))),1,'first'),1)];
-    significance = [significance p_values(end)<percentiles_95];
 end
 
 

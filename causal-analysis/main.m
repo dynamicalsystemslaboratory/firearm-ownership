@@ -29,7 +29,7 @@ XYZ = [diff(X)>0 Y(1:end-1)>0 diff(Z)>0];
 XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
 % compute te, surrogate distributions,and 95th percentile
-[TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+[TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
 TE_results = array2table([TE; p_values; percentiles_95],'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'},'RowNames', {'TE','p_values','95th_percentile'});
 
 
@@ -52,7 +52,7 @@ for s = states
     XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
     % compute te, surrogate distributions,and 95th percentile
-    [TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+    [TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
  
     % summarize results
     state_TE(strcmp(states,s),2:end) = array2table(TE);
@@ -81,7 +81,7 @@ XYZ = [diff(X)>0 Y(1:end-1)>0 diff(Z)>0];
 XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
 % compute te, surrogate distributions,and 95th percentile
-[TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+[TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
 TE_results = array2table([TE; p_values; percentiles_95],'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'},'RowNames', {'TE','p_values','95th_percentile'});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% state level %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -103,7 +103,7 @@ for s = states
     XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
     % compute te, surrogate distributions,and 95th percentile
-    [TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+    [TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
     
     % summarize results
     state_TE(strcmp(states,s),2:end) = array2table(TE);
@@ -133,7 +133,7 @@ XYZ = [diff(X)>0 Y(1:end-1)>0 diff(Z)>0];
 XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
 % compute te, surrogate distributions,and 95th percentile
-[TE,distributions,percentiles_95,p_values,significance] = compute_TE(XYZX1Y1Z1,num_iterations);
+[TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
 TE_results = array2table([TE; p_values; percentiles_95],'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'},'RowNames', {'TE','p_values','95th_percentile'});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% state level %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +154,7 @@ for s = states
     XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
     % compute te, surrogate distributions,and 95th percentile
-    [TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+    [TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
     
     % organize and save results
     state_TE(strcmp(states,s),2:end) = array2table(TE);
@@ -183,7 +183,7 @@ XYZ = [diff(X)>0 Y(1:end-1)>0 diff(Z)>0];
 XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
 % compute te, surrogate distributions,and 95th percentile
-[TE,distributions,percentiles_95,p_values,significance] = compute_TE(XYZX1Y1Z1,num_iterations);
+[TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
 TE_results = array2table([TE; p_values; percentiles_95],'VariableNames',{'TE_X_YZ','TE_X_ZY','TE_Y_XZ','TE_Y_ZX','TE_Z_XY','TE_Z_YX'},'RowNames', {'TE','p_values','95th_percentile'});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% state level %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -204,7 +204,7 @@ for s = states
     XYZX1Y1Z1 = array2table([XYZ(1:end-1,:) XYZ(2:end,:)],'VariableNames',{'X','Y','Z','X1','Y1','Z1'}); % time series for t and t+1
 
     % compute te, surrogate distributions,and 95th percentile
-    [TE,distributions,percentiles_95,p_values,~] = compute_TE(XYZX1Y1Z1,num_iterations);
+    [TE,distributions,percentiles_95,p_values] = compute_TE(XYZX1Y1Z1,num_iterations);
     
     % summarize and save results
     state_TE(strcmp(states,s),2:end) = array2table(TE);

@@ -167,12 +167,12 @@ for r = 1:size(P_Z1XYZ,1)
 end
 
 % compute transfer entropy
-TE_X_YZ = H_Y1_YZ-H_Y1_XYZ; % should be 0.0184 / 0.0146
-TE_X_ZY = H_Z1_YZ-H_Z1_XYZ; % should be 0.0029 / 0.0267
-TE_Y_XZ = H_X1_XZ-H_X1_XYZ; % should be 0.0134 / 0.0111
-TE_Y_ZX = H_Z1_XZ-H_Z1_XYZ; % should be 0.0086 / 0.0345 
-TE_Z_XY = H_X1_XY-H_X1_XYZ; % should be 0.0389 / 0.0018
-TE_Z_YX = H_Y1_XY-H_Y1_XYZ; % should be 0.0114 / 0.0082
+TE_X_YZ = H_Y1_YZ-H_Y1_XYZ;
+TE_X_ZY = H_Z1_YZ-H_Z1_XYZ;
+TE_Y_XZ = H_X1_XZ-H_X1_XYZ;
+TE_Y_ZX = H_Z1_XZ-H_Z1_XYZ;
+TE_Z_XY = H_X1_XY-H_X1_XYZ;
+TE_Z_YX = H_Y1_XY-H_Y1_XYZ;
 
 
 end
