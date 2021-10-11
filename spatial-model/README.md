@@ -1,4 +1,4 @@
-Matlab data tables and codes in this folder calibrate a spatial econometric model that estimates monthly state-level firearm ownership in the United States from data on background checks and suicides with firearms. To run the analysis, place all files in the same directory and run "main.m".
+Matlab data tables and codes in this folder calibrate a spatial econometric model that estimates monthly state-level firearm ownership in the United States from data on background checks and suicides with firearms. To run the analysis, place all files in the same directory and run "main.m". The expected output of the main script is a table called "firearm_ownership_monthly" that contains those estimations. Model calibration and inference take a couple of minutes to compelete.
 
 # Data
 
