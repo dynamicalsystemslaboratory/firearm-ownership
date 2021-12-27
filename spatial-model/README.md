@@ -2,11 +2,13 @@ Matlab data tables and codes in this folder calibrate a spatial econometric mode
 
 # Data
 
-- A.mat: A table containing the area of each state. (source: US Census Bureau)
 - BC.mat: A table containing the monthly counts of background checks in each state between January 1999 and March 2021. (source: FBI NICS)
 - D.mat: A symmetric matrix summarizing the distances between the centroids of states, measured in kilometers. (source: N. Abaid et al. "The effect of geography and citizen behavior on motorvehicle deaths in the United States," PLoS ONE 10 (2015) e0123339)
 - S.mat: A table containing the monthly counts of suicides and suicides with firearms as well as the fraction of suicides with firearms, in each state between January 1999 and December 2019. (source: CDC Wonder)
 - data.mat: A table summarizing yearly data on national- and state-level population size, firearm ownership, background checks, and suicides. (sources: US Census Bureau, Gallup, FBI NICS and CDC Wonder)
+- A.mat: A table containing the area of each state. (source: US Census Bureau)
+- GDP.mat: A table containing the gross domestic product of each state between 1997-2020. (source: Federal Reserve Economic Data)
+
 
 # Codes
 
