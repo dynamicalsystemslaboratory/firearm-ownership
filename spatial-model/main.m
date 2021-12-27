@@ -106,9 +106,6 @@ w(:,strcmp(D.Properties.RowNames, 'AK')) = []; % remove AK (no BC data)
 w(strcmp(D.Properties.RowNames, 'AK'),:) = []; 
 w = normw(w); % row-normalize the matrix
 
-% W = null
-% W = zeros(length(states)*(length(years)-1));
-
 % % W = 1/distance
 % W = zeros(length(states)*(length(years)-1));
 % for s = 1:length(states)
