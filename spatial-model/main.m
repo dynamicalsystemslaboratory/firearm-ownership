@@ -1,9 +1,11 @@
 clc; clear;
 
 load('data.mat')
+load('A.mat')
 load('D.mat')
 load('S.mat')
 load('BC.mat')
+load('GDP.mat')
 
 %% define data sets
 
@@ -21,6 +23,8 @@ S(strcmp(S.State, 'Hawaii'),:) =[];
 
 states = unique(state_data.state);
 years = unique(state_data.year);
+areas = A.total_area_km2(ismember(A.state,states));  
+
 
 %% arrange monthly data from November until October
 
@@ -102,14 +106,106 @@ w(:,strcmp(D.Properties.RowNames, 'AK')) = []; % remove AK (no BC data)
 w(strcmp(D.Properties.RowNames, 'AK'),:) = []; 
 w = normw(w); % row-normalize the matrix
 
+% W = null
+% W = zeros(length(states)*(length(years)-1));
+
+% % W = 1/distance
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:);  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = area
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         state_areas = areas;
+%         state_areas(s)=0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = state_areas;  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = population
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         population_size = state_data.population(state_data.year==years(y));
+%         population_size(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = (population_size);
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% W = population/distance
 W = zeros(length(states)*(length(years)-1));
 for s = 1:length(states)
     for y = 1:(length(years)-1)
-        population_fraction = state_data.population(state_data.year==years(y))/sum(state_data.population(state_data.year==years(y)));
-        W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*transpose(population_fraction);  
+        population_size = state_data.population(state_data.year==years(y));
+        W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*transpose(population_size);
     end
 end
 W = normw(W); % row-normalize the matrix
+ 
+% % W = population density/distance
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         population_density = state_data.population(state_data.year==years(y))./areas;
+%         population_density(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*transpose(population_density);  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = GDP
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
+%         gdps(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = gdps;  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = GDP/distance
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
+%         gdps(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*gdps;  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = GDP/area
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
+%         gdps(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = transpose(gdps)./areas;  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+% % W = GDP/area
+% W = zeros(length(states)*(length(years)-1));
+% for s = 1:length(states)
+%     for y = 1:(length(years)-1)
+%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
+%         gdps(s) = 0;
+%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = transpose(w(s,:)).*(transpose(gdps)./areas);  
+%     end
+% end
+% W = normw(W); % row-normalize the matrix
+
+
 
 % create a vector of dummy variables to capture a time trend
 d = transpose(repmat([1:(length(years)-1)],1,length(states))); 
@@ -153,6 +249,8 @@ t_psi2 = results.tstat(8);
 t_alpha_hrr = results.tstat(9);
 t_alpha_lrr = results.tstat(10);
 t_gamma = results.tstat(11);
+
+
 
 %% infer gun ownership on a monthly resolution
 
@@ -230,22 +328,6 @@ for p = 1:size(firearm_ownership_monthly,1)
     firearm_ownership_monthly.USA(p) = sum(transpose(firearm_ownership_monthly{p,3:(length(states)+2)}).*state_data.population(state_data.year==firearm_ownership_monthly.Year(p)))./sum(state_data.population(state_data.year==firearm_ownership_monthly.Year(p)));
 end
 
-figure % reproduce figure S4
-t=tiledlayout(7,7);
-for s = 1:length(states)   
-    nexttile
-    plot(2000:(1/12):(max(years)+9/12),firearm_ownership_monthly{:,s+2},'Color','black')
-    ylim([0 1])
-    hold on 
-    sp = scatter((2000+10/12):1:2020,state_data.fraction_firearm_owners((strcmp(state_data.state,states(s)))),20,'filled')
-    sp.MarkerEdgeColor = 'black';
-    sp.MarkerFaceColor = 'red';
-    title(string(states(s)));
-    hold off    
-end
-xlabel(t,'Time','FontSize',16,'Color','black')
-ylabel(t,'Fraction of gun owners','FontSize',16,'Color','black')
-
 %% compute sum of square errors (SSE) and mean of square errors (MSE)
 
 errors = array2table(nan(length(states)+1,3),'VariableNames',{'state' 'sse' 'mse'});
@@ -265,3 +347,23 @@ end
 
 sse = sum((state_data.fraction_firearm_owners-reshape(firearm_ownership_monthly{firearm_ownership_monthly.Month==10,3:50},960,1).^2));
 mse = sum((state_data.fraction_firearm_owners-reshape(firearm_ownership_monthly{firearm_ownership_monthly.Month==10,3:50},960,1).^2))/960;
+
+
+%% plot model output on state level
+
+figure
+t=tiledlayout(7,7);
+for s = 1:length(states)   
+    nexttile
+    plot(2000:(1/12):(max(years)+9/12),firearm_ownership_monthly{:,s+2},'Color','black')
+    ylim([0 1])
+    hold on 
+    sp = scatter((2000+10/12):1:2020,state_data.fraction_firearm_owners((strcmp(state_data.state,states(s)))),20,'filled')
+    sp.MarkerEdgeColor = 'black';
+    sp.MarkerFaceColor = 'red';
+    title(string(states(s)));
+    hold off    
+end
+xlabel(t,'Time','FontSize',16,'Color','black')
+ylabel(t,'Fraction of gun owners','FontSize',16,'Color','black')
+
