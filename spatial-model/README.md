@@ -13,6 +13,7 @@ Matlab data tables and codes in this folder calibrate a spatial econometric mode
 # Codes
 
 - main.m: The main script that calls all other tables and functions to calibrate the model and infer monthly firearm ownership between January 2000 and October 2019. In order to study models with an alternative spatial weight matrix, one could comment and uncomment different sections of the main script between lines 109-203.
+- main_non_spatial.m: A script that calls the relevant tables and functions to calibrate a non-spatial model (W=0) and infer monthly firearm ownership between January 2000 and October 2019.
 - normw.m: A function that row-normalizes square matrices.
 - calibrate_model.m: A function that calibrates the parameters of spatial models. This function was written by James P. LeSage and obtained from www.spatial-econometrics.com.
 - invpd.m, lndetmc.m, f2_sar.m, hessian.m, f_sar.m: functions that are called by calibrate_model.m and support the estimation of parameters. These functions were written by James P. LeSage and obtained from www.spatial-econometrics.com.
