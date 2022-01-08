@@ -17,13 +17,15 @@ The data sets in this folder contain the data for replication of the study.
 
 ## mat files
 
-- A.mat: A table containing the area of each state. (source: US Census Bureau)
 - BC.mat: A table containing the monthly counts of background checks in each state between January 1999 and March 2021. (source: FBI NICS)
 - BCC.mat: A table containing the monthly counts of background checks in each state between January 1999 and March 2021, divided by the population size in the state that month. (source: FBI NICS and US Census Bureau)
-- D.mat: A symmetric matrix summarizing the distances between the centroids of states, measured in kilometers. (source: N. Abaid et al. "The effect of geography and citizen behavior on motorvehicle deaths in the United States," PLoS ONE 10 (2015) e0123339)
-- data.mat: A table summarizing yearly data on national- and state-level population size, firearm ownership, background checks, and suicides. (sources: US Census Bureau, Gallup, FBI NICS and CDC Wonder)
-- GDP.mat: A table containing the gross domestic product of each state between 1997-2020. (source: Federal Reserve Economic Data)
+- BC_2000_2017_sa_dt.mat: A table containing the processed counts of background checks in each state between January 2000 and December 2017, after seasonal adjustment and detrending.
+- BCC_2000_2017_sa_dt.mat: A table containing the processed counts of background checks per capita in each state between January 2000 and December 2017, after seasonal adjustment and detrending.
+- FO.mat: A table comtaining the model's output for firearm ownership (fraction of firearm owners) in each state between January 2000 and October 2019.
+- FO_2000_2017_sa_dt.mat: A table containing processed firearm ownership in each state between January 2000 and October 2017, after seasonal adjustment and 
 - S.mat: A table containing the monthly counts of suicides and suicides with firearms as well as the fraction of suicides with firearms, in each state between January 1999 and December 2019. (source: CDC Wonder)
+- S_2000_2017.mat: A table containing the processed fraction of suicides committed with firearms in each state between January 2000 and December 2017, after seasonal adjustment and detrending.
+- nature.mat: A table containing the time series for processed background checks, mass shootings, media output on firearm laws and regulations, media output on unemployment, and media output on shootings excluding firearm laws and regulations between January 1999 and December 2017. (source: M. Porfiri et al. 2019, "Media coverage and firearm acquisition in the aftermath of a mass shooting," Nature Human Behaviour 3, 913–921)
 
 
 ## scripts
