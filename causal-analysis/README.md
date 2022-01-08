@@ -18,4 +18,5 @@ To run the analyses, place all files in the same directory and run "main.m". Wit
 - main.m: The main script that calls all other tables and functions to compute transfer entropy in the different triads.
 - compute_TE.m: A function that computes the observed transfer entropy between pairs of variables and shuffles time series to create surrogate distributions.
 - conditional_TE.m: A function that computes conditional transfer entropy while preserving structures in the data.
-
+- delay_analysis.m: A script that calls compute_delay_TE.m to compute conditional transfer entropy with delays for every pair of variables under consideration in this study. The script also plots the figures in figures 5 and 6 in the Supporting Information.
+- compute_delay_TE.m: A function that computes the observed transfer entropy between pairs of variables with a delay on the source variable and on the variable conditioned upon. It calls the conditional_TE.m function.
