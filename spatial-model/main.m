@@ -6,6 +6,7 @@ load('D.mat')
 load('S.mat')
 load('BC.mat')
 load('GDP.mat')
+load('B.mat')
 
 %% define data sets
 
@@ -106,38 +107,6 @@ w(:,strcmp(D.Properties.RowNames, 'AK')) = []; % remove AK (no BC data)
 w(strcmp(D.Properties.RowNames, 'AK'),:) = []; 
 w = normw(w); % row-normalize the matrix
 
-% % W = 1/distance
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:);  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = area
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         state_areas = areas;
-%         state_areas(s)=0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = state_areas;  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = population
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         population_size = state_data.population(state_data.year==years(y));
-%         population_size(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = (population_size);
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% W = population/distance
 W = zeros(length(states)*(length(years)-1));
 for s = 1:length(states)
     for y = 1:(length(years)-1)
@@ -146,63 +115,6 @@ for s = 1:length(states)
     end
 end
 W = normw(W); % row-normalize the matrix
- 
-% % W = population density/distance
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         population_density = state_data.population(state_data.year==years(y))./areas;
-%         population_density(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*transpose(population_density);  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = GDP
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
-%         gdps(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = gdps;  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = GDP/distance
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
-%         gdps(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = w(s,:).*gdps;  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = GDP/area
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
-%         gdps(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = transpose(gdps)./areas;  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-% % W = GDP/area
-% W = zeros(length(states)*(length(years)-1));
-% for s = 1:length(states)
-%     for y = 1:(length(years)-1)
-%         gdps = GDP{GDP.Year==years(y),ismember(GDP.Properties.VariableNames,states)};
-%         gdps(s) = 0;
-%         W((s-1)*(length(years)-1)+y,y:(size(y_t,1)/length(states)):end) = transpose(w(s,:)).*(transpose(gdps)./areas);  
-%     end
-% end
-% W = normw(W); % row-normalize the matrix
-
-
 
 % create a vector of dummy variables to capture a time trend
 d = transpose(repmat([1:(length(years)-1)],1,length(states))); 
@@ -248,6 +160,42 @@ t_alpha_lrr = results.tstat(10);
 t_gamma = results.tstat(11);
 
 
+% % run model again, without the parameters that are not significantly different from zero
+% results_2 = calibrate_model(y_t,[x1_t_1.*HRR...
+%     x1_t_1.*LRR...
+%     x2_t_1.*HRR...
+%     x2_t_1.*LRR...
+%     W*(x1_t_1)...
+%     W*(x2_t_1)...
+%     HRR...
+%     LRR...
+%     d],W);
+% 
+% rho_2 = results_2.rho; % coefficient for W*y_t
+% phi1_hrr_2 = results_2.beta(1); % coefficient for x1
+% phi1_lrr_2 = results_2.beta(2); % coefficient for x1
+% phi2_hrr_2 = results_2.beta(3); % coefficient for x2
+% phi2_lrr_2 = results_2.beta(4); % coefficient for x2
+% psi1_2 = results_2.beta(5); % coefficient for W*x2
+% psi2_2 = results_2.beta(6); % coefficient for W*x1
+% alpha_hrr_2 = results_2.beta(7);
+% alpha_lrr_2 = results_2.beta(8);
+% gamma_2 = results_2.beta(9);
+% sig_2 = results_2.sige;
+% 
+% t_rho_2 = results_2.tstat(10);
+% t_phi1_hrr_2 = results_2.tstat(1);
+% t_phi1_lrr_2 = results_2.tstat(2);
+% t_phi2_hrr_2 = results_2.tstat(3);
+% t_phi2_lrr_2 = results_2.tstat(4);
+% t_psi1_2 = results_2.tstat(5);
+% t_psi2_2 = results_2.tstat(6);
+% t_alpha_hrr_2 = results_2.tstat(7);
+% t_alpha_lrr_2 = results_2.tstat(8);
+% t_gamma_2 = results_2.tstat(9);
+% 
+% tau = 0;
+% eta = 0;
 
 %% infer gun ownership on a monthly resolution
 
@@ -344,6 +292,7 @@ end
 
 sse = sum((state_data.fraction_firearm_owners-reshape(firearm_ownership_monthly{firearm_ownership_monthly.Month==10,3:50},960,1).^2));
 mse = sum((state_data.fraction_firearm_owners-reshape(firearm_ownership_monthly{firearm_ownership_monthly.Month==10,3:50},960,1).^2))/960;
+
 
 
 %% plot model output on state level
